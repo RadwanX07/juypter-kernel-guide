@@ -79,6 +79,51 @@ Jupyter reads this file, launches the specified Python, and connects to it. The 
 
 ---
 
+## How to Add New Libraries to an Existing Kernel
+
+Already have a kernel but need a new library? **Do NOT `!pip install` inside the notebook.** Instead, install it in the kernel's virtual environment once, and it stays forever.
+
+### Method 1: Activate the venv and install (recommended)
+
+```bash
+source ~/venvs/data/bin/activate    # activate the kernel's venv
+pip install statsmodels             # install new library
+```
+
+That's it. The next time you use the **"Python (Data)"** kernel, `import statsmodels` will work.
+
+### Method 2: Find the venv path from kernel.json
+
+If you forgot which venv a kernel uses:
+
+```bash
+cat ~/.local/share/jupyter/kernels/data/kernel.json
+```
+
+Look at the `argv` line — it shows the full path to the Python executable. The venv folder is two levels up from `bin/python`.
+
+Example: if argv shows `/home/radwan/venvs/data/bin/python`, the venv is `/home/radwan/venvs/data`.
+
+Then activate and install:
+
+```bash
+source /home/radwan/venvs/data/bin/activate
+pip install seaborn
+```
+
+### Method 3: Install from inside a notebook (if you must)
+
+Run this in a notebook cell **using the correct kernel**:
+
+```python
+import sys
+!{sys.executable} -m pip install seaborn
+```
+
+This uses the kernel's own pip, not the system pip. But Method 1 is cleaner.
+
+---
+
 ## Managing Multiple Kernels
 
 | Kernel Name | Display Name | Venv Path | Libraries |
