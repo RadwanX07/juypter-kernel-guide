@@ -1,0 +1,14 @@
+{
+ "argv": [
+  "/home/username/venvs/econ/bin/python",
+  "-m",
+  "ipykernel_launcher",
+  "-f",
+  "{connection_file}"
+ ],
+ "display_name": "Python (Econ)",
+ "language": "python",
+ "metadata": {
+  "debugger": true
+ }
+}
