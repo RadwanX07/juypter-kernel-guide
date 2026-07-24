@@ -1,6 +1,20 @@
 # Jupyter Custom Kernel Guide
 
-> **Two platforms covered:** Linux (left column) and Windows (right column / separate section).
+## Contents
+
+- [The Problem](#the-problem)
+- [The Solution](#the-solution-one-virtual-environment--one-kernel)
+- Setup
+  - [Linux Setup](#step-by-step-setup-linux)
+  - [Windows Setup](#step-by-step-setup-windows)
+- [How It Works](#how-it-works)
+- [Adding Libraries to Existing Kernel](#how-to-add-new-libraries-to-an-existing-kernel)
+- [Managing Multiple Kernels](#managing-multiple-kernels)
+- [List / Remove Kernels](#list--remove-kernels)
+- [Check Kernel's Python](#bonus-check-kernels-python)
+- Quick Scripts
+  - [Linux Script](#linux-setup_kernelsh)
+  - [Windows Script](#windows-setup_kernelbat)
 
 ---
 
