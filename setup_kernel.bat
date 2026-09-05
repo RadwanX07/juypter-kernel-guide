@@ -1,30 +1,42 @@
 @echo off
-REM Usage: setup_kernel.bat <name> <display-name>
-REM Example: setup_kernel.bat econ "Python (Econ)"
+rem ============================================================================
+rem Script: setup_kernel.bat
+rem Purpose: Automatically create a venv and register kernel on Windows (CMD)
+rem Usage: setup_kernel.bat <kernel_name> ["Display Name"]
+rem ============================================================================
 
-SET NAME=%1
-SET DISPLAY=%2
-SET VENV_DIR=%USERPROFILE%\venvs\%NAME%
+setlocal enabledelayedexpansion
 
-IF "%NAME%"=="" GOTO usage
-IF "%DISPLAY%"=="" GOTO usage
+if "%~1"=="" (
+    echo Usage: setup_kernel.bat ^<kernel_name^> ["Display Name"]
+    echo Example: setup_kernel.bat data "Python (Data)"
+    exit /b 1
+)
 
-echo Creating virtual environment at %VENV_DIR% ...
-python -m venv %VENV_DIR%
+set "NAME=%~1"
+set "DISPLAY=%~2"
+if "%DISPLAY%"=="" set "DISPLAY=Python (%NAME%)"
+set "VENV_DIR=%USERPROFILE%\venvs\%NAME%"
 
-echo Installing jupyter and ipykernel ...
-call %VENV_DIR%\Scripts\activate
-pip install jupyter ipykernel
+echo [1/4] Creating virtual environment at "%VENV_DIR%"...
+if not exist "%USERPROFILE%\venvs" mkdir "%USERPROFILE%\venvs"
+python -m venv "%VENV_DIR%"
+if errorlevel 1 (
+    echo Error: Failed to create virtualenv. Ensure Python is installed and in your PATH.
+    exit /b 1
+)
 
-echo Registering kernel '%NAME%' with display name '%DISPLAY%' ...
-python -m ipykernel install --user --name=%NAME% --display-name="%DISPLAY%"
+echo [2/4] Upgrading pip and installing ipykernel...
+call "%VENV_DIR%\Scripts\activate.bat"
+python -m pip install --upgrade pip
+pip install ipykernel
 
-echo Done! Kernel '%NAME%' created.
-echo To install packages: %VENV_DIR%\Scripts\activate ^&^& pip install ^<package^>
-GOTO end
+echo [3/4] Registering kernel with Jupyter...
+python -m ipykernel install --user --name="%NAME%" --display-name="%DISPLAY%"
 
-:usage
-echo Usage: setup_kernel.bat ^<name^> ^<display-name^>
-echo Example: setup_kernel.bat econ "Python (Econ)"
-
-:end
+echo.
+echo ============================================================================
+echo Kernel '%DISPLAY%' successfully registered!
+echo Virtual environment location: %VENV_DIR%
+echo Activate anytime with: call "%VENV_DIR%\Scripts\activate.bat"
+echo ============================================================================
