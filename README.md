@@ -1,4 +1,4 @@
-# Kernel Setup for Data Science
+# Kernel Setup ML / DS
 
 # Linux
 
